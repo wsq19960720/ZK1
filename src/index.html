@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/flexible.js"></script>
+    <script src="js/better-scroll.js"></script>
+    <link rel="stylesheet" href="css/swiper.css">
+    <script src="js/swiper.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="left"><img src="./img/1.jpg" alt=""></div>
+            <div class="right"><img src="./img/2.jpg" alt=""></div>
+        </header>
+        <main class="main">
+            <div class="mian">
+                <section class="list">
+                    <ul>
+                        <li>NBA</li>
+                        <li>CBA</li>
+                        <li>足球</li>
+                        <li>电竞</li>
+                        <li>社区</li>
+                        <li>游戏</li>
+                        <li>步行</li>
+                    </ul>
+                </section>
+                <section class="banner">
+                    <div class="swiper-container container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img src="img/3.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="img/3.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="img/3.jpg" alt=""></div>
+                        </div>
+                    </div>
+                </section>
+                <section class="jue">
+                    <ul>
+                        <li><span>NBA</span>爵士VS快船</li>
+                        <li><span>NBA</span>爵士VS快船</li>
+                        <li><span>NBA</span>爵士VS快船</li>
+                    </ul>
+                </section>
+                <section class="zhong">
+                    <!-- <dl>
+                        <dt><img src="img/4.jpg" alt=""></dt>
+                        <dd>
+                            <span>NBA</span>
+                            <h4>终点站！诺维茨基最后一站得到20分10篮板</h4>
+                        </dd>
+                    </dl> -->
+                </section>
+            </div>
+
+        </main>
+        <footer class="footer"></footer>
+    </div>
+    <script>
+        //better-scroll滚动
+        var scroll = new BScroll(".main", {
+                probeType: 2
+            })
+            //页面轮播图的效果
+        var swiper = new Swiper(".container", {
+                autoplay: true,
+                loop: true
+            })
+            //列表数据请求和渲染
+        function ajax(url, data = null, type = "GET") {
+            return new Promise((resolve, reject) => {
+                var xhr = new XMLHttpRequest();
+                xhr.open(type, url);
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            resolve(xhr.responseText)
+                        } else {
+                            reject("500")
+                        }
+                    }
+                }
+                xhr.send(null);
+            })
+        }
+        var zhongs = document.querySelector(".zhong");
+
+        ajax("./data/data.json").then(res => {
+            var resulet = JSON.parse(res)
+            console.log(JSON.parse(res))
+            zhongs.innerHTML += resulet.map(item => {
+                return ` <dl>
+                        <dt><img src="${item.img}" alt=""></dt>
+                        <dd>
+                            <span>NBA</span>
+                            <h4>${item.title}</h4>
+                        </dd>
+                    </dl>`
+            }).join("")
+
+        })
+    </script>
+</body>
+
+</html>
